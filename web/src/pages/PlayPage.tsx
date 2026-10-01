@@ -24,6 +24,7 @@ export default function PlayPage() {
   const [session, setSession] = useState<SessionView | null>(null);
   const [flash, setFlash] = useState(false);
   const [localTaps, setLocalTaps] = useState(0);
+  const [audioHint, setAudioHint] = useState(true);
   const startRef = useRef<number | null>(null);
 
   useEffect(() => {
@@ -76,14 +77,24 @@ export default function PlayPage() {
         : "待機中";
 
   async function handleTap() {
+    // Always unlock on gesture (iOS needs this)
     await unlockAudio();
-    if (!active || !join) return;
+    if (!active || !join) {
+      // Waiting: soft test beep so students can check speakers / silent switch
+      await playBeep(0.4);
+      setAudioHint(false);
+      return;
+    }
     const origin = startRef.current ?? session?.experimentStartedAt ?? Date.now();
     const tMs = Date.now() - origin;
-    playBeep(volume);
+    // Server uses 0.05 / 1.0; map so soft mode is still audible on phones
+    const playVol =
+      volume <= 0 ? 0 : volume < 0.5 ? 0.4 : Math.min(1, volume);
+    await playBeep(playVol);
     setFlash(true);
     window.setTimeout(() => setFlash(false), 120);
-    setLocalTaps((n) => n + 1);
+    setLocalTaps((n: number) => n + 1);
+    setAudioHint(false);
     await sendTap(join.code, tMs);
   }
 
@@ -99,6 +110,12 @@ export default function PlayPage() {
         </div>
         <p className="status-pill">{active ? "タップ可" : "開始待ち"}</p>
       </div>
+      {audioHint && (
+        <p className="muted" style={{ margin: "0 0 0.5rem" }}>
+          iPhone: 側面のサイレントスイッチをオフにし、コントロールセンターの
+          「着信／通知音」ではなくメディア音量も上げてください。待機中でもタップで音テストできます。
+        </p>
+      )}
       <button
         type="button"
         className={`tap-pad ${active ? "live" : "idle"}`}
@@ -111,7 +128,7 @@ export default function PlayPage() {
         <small>
           {active
             ? "心地よい一定リズムでやさしくタップ"
-            : "講師の開始合図を待ってください"}
+            : "講師の開始合図を待ってください（タップで音テスト可）"}
         </small>
       </button>
     </section>
