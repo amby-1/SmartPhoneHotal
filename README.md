@@ -128,4 +128,6 @@ npm start
 | Plan | Free |
 | 設定ファイル | [`render.yaml`](render.yaml) |
 
+> **補足:** Render では `NODE_ENV=production` のため、ビルド時は `npm install --include=dev` で TypeScript / Vite / `@types/*` も入れます（`build:prod` に含まれています）。
+
 無料枠はアイドル時にスリープします。授業数分前に講師が URL を開いて起こしてください。

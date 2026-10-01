@@ -10,7 +10,7 @@
     "dev:web": "npm run dev --prefix web",
     "dev:server": "npm run start:dev --prefix server",
     "build": "npm run build --prefix web",
-    "build:prod": "npm install --prefix server && npm install --prefix web && npm run build --prefix web && npm run build --prefix server",
+    "build:prod": "npm install --prefix server --include=dev && npm install --prefix web --include=dev && npm run build --prefix web && npm run build --prefix server",
     "start": "npm run start --prefix server",
     "sim": "python -m sim.run",
     "sim:demo": "python -m sim.run --demo",
