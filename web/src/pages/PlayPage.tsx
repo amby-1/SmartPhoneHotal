@@ -77,24 +77,19 @@ export default function PlayPage() {
         : "待機中";
 
   async function handleTap() {
-    // Always unlock on gesture (iOS needs this)
+    // Always unlock on gesture (iOS needs this before experiment 2)
     await unlockAudio();
-    if (!active || !join) {
-      // Waiting: soft test beep so students can check speakers / silent switch
-      await playBeep(0.4);
-      setAudioHint(false);
-      return;
-    }
+    if (!active || !join) return;
     const origin = startRef.current ?? session?.experimentStartedAt ?? Date.now();
     const tMs = Date.now() - origin;
-    // Server uses 0.05 / 1.0; map so soft mode is still audible on phones
-    const playVol =
-      volume <= 0 ? 0 : volume < 0.5 ? 0.4 : Math.min(1, volume);
-    await playBeep(playVol);
+    // 実験1は無音、実験2のみ音を出す
+    if (volume > 0) {
+      await playBeep(volume);
+      setAudioHint(false);
+    }
     setFlash(true);
     window.setTimeout(() => setFlash(false), 120);
     setLocalTaps((n: number) => n + 1);
-    setAudioHint(false);
     await sendTap(join.code, tMs);
   }
 
@@ -112,8 +107,8 @@ export default function PlayPage() {
       </div>
       {audioHint && (
         <p className="muted" style={{ margin: "0 0 0.5rem" }}>
-          iPhone: 側面のサイレントスイッチをオフにし、コントロールセンターの
-          「着信／通知音」ではなくメディア音量も上げてください。待機中でもタップで音テストできます。
+          実験1は無音、実験2で音が出ます。iPhone
+          はサイレントスイッチをオフにし、メディア音量を上げてください。
         </p>
       )}
       <button
@@ -127,8 +122,10 @@ export default function PlayPage() {
         <span>TAP</span>
         <small>
           {active
-            ? "心地よい一定リズムでやさしくタップ"
-            : "講師の開始合図を待ってください（タップで音テスト可）"}
+            ? session?.experiment === "experiment1"
+              ? "無音です。心地よい一定リズムでやさしくタップ"
+              : "音量MAX想定。心地よい一定リズムでやさしくタップ"
+            : "講師の開始合図を待ってください"}
         </small>
       </button>
     </section>

@@ -8,7 +8,7 @@ import type {
   TapEvent,
 } from "./types.js";
 
-const VOLUME_EXP1 = 0.05;
+const VOLUME_EXP1 = 0; // ベース計測は無音（物理結合なし）
 const VOLUME_EXP2 = 1.0;
 
 function makeCode(): string {
