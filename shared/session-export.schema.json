@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://smartphone-hotaru.local/session-export.schema.json",
+  "title": "SmartPhoneHotaruSessionExport",
+  "type": "object",
+  "required": ["sessionId", "desks", "experiment1", "experiment2"],
+  "properties": {
+    "sessionId": { "type": "string" },
+    "createdAt": { "type": "string" },
+    "desks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "x", "y"],
+        "properties": {
+          "id": { "type": "string" },
+          "x": { "type": "number", "description": "meters" },
+          "y": { "type": "number", "description": "meters" }
+        }
+      }
+    },
+    "experiment1": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["deskId", "taps_ms"],
+        "properties": {
+          "deskId": { "type": "string" },
+          "taps_ms": {
+            "type": "array",
+            "items": { "type": "number" },
+            "description": "Tap times in ms from experiment start"
+          }
+        }
+      }
+    },
+    "experiment2": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["deskId", "taps_ms"],
+        "properties": {
+          "deskId": { "type": "string" },
+          "taps_ms": {
+            "type": "array",
+            "items": { "type": "number" }
+          }
+        }
+      }
+    },
+    "meta": {
+      "type": "object",
+      "properties": {
+        "volumeExperiment1": { "type": "number" },
+        "volumeExperiment2": { "type": "number" },
+        "note": { "type": "string" }
+      }
+    }
+  }
+}

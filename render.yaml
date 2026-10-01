@@ -1,0 +1,18 @@
+# Render Blueprint: https://render.com/docs/blueprint-spec
+# ダッシュボードから手動作成する場合も、下記のコマンドと同じ内容を使ってください。
+
+services:
+  - type: web
+    name: smartphone-hotaru
+    runtime: node
+    plan: free
+    region: singapore
+    rootDir: .
+    buildCommand: npm run build:prod
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: NODE_ENV
+        value: production

@@ -1,0 +1,1 @@
+"""NiceGUI simulation UI package."""

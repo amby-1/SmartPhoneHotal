@@ -1,0 +1,14 @@
+.tools/
+material/
+node_modules/
+dist/
+web/dist/
+server/dist/
+sim/output/
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+*.log
+.DS_Store
