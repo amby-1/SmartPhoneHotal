@@ -13,7 +13,6 @@ export default function App() {
         </Link>
         <nav className="nav">
           <Link to="/join">参加</Link>
-          <Link to="/instructor">講師</Link>
         </nav>
       </header>
       <main className="main">
@@ -22,6 +21,7 @@ export default function App() {
           <Route path="/join" element={<JoinPage />} />
           <Route path="/join/:code" element={<JoinPage />} />
           <Route path="/play" element={<PlayPage />} />
+          {/* ナビ・トップからは非表示。講師は URL を直接開く */}
           <Route path="/instructor" element={<InstructorPage />} />
           <Route path="/instructor/:code" element={<InstructorPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />

@@ -13,14 +13,11 @@ export default function HomePage() {
         <Link className="btn primary" to="/join">
           参加する
         </Link>
-        <Link className="btn" to="/instructor">
-          講師画面
-        </Link>
       </div>
       <ol className="steps">
         <li>講師がセッションを作成し、QR / コードを共有</li>
         <li>席番号（例: A2）を入力して参加</li>
-        <li>実験1（音弱）→ 実験2（音量MAX）でタップ</li>
+        <li>実験1（無音）→ 実験2（音あり）でタップ</li>
         <li>データを書き出し、シミュレーションで同期を再現</li>
       </ol>
     </section>
